@@ -1,6 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import '../middleware/catch_exceptions.dart';
 import 'user/user_handler.dart';
 
 class RootHandler {
@@ -9,8 +10,9 @@ class RootHandler {
 
     router.mount('/user', UserHandler().handler);
 
-    final middlewares = Pipeline() //
-        .addMiddleware(logRequests());
+    final middlewares = Pipeline()
+        .addMiddleware(logRequests())
+        .addMiddleware(catchExceptions());
 
     final rootHandler = middlewares.addHandler(router);
 
